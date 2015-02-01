@@ -2,7 +2,7 @@ require 'Huey'
 
 class HueController < ApplicationController
   def index
-    Huey::Bulb.all
+    render :json => Huey::Bulb.all
   end
 
   def show

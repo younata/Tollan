@@ -7,10 +7,13 @@ RSpec.describe HueController, :type => :controller do
       get :index
       expect(response).to have_http_status(:success)
     end
+
+    it "returns the lights as a json" do
+    end
   end
 
-  describe "GET update" do
-    it "returns http success" do
+  describe "PUT update" do
+    it "returns http failure" do
       get :update
       expect(response).to have_http_status(:success)
     end
