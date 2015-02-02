@@ -16,12 +16,10 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
-
 gem 'bcrypt', '~> 3.1.7'
-
 gem 'huey'
-
 gem 'json'
+gem 'multi_json'
 
 # Use Unicorn as the app server
 gem 'unicorn'
@@ -40,5 +38,7 @@ group :development, :test do
   gem 'spring'
 
   gem 'rspec-rails'
+
+  gem 'rake'
 end
 

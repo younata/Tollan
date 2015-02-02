@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
-  get 'hue/index'
+  get 'bulbs', to: 'hue#index'
+  get 'bulbs/:id', to: 'hue#show'
 
-  get 'hue/update'
+  put 'bulbs/:id', to: 'hue#update'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
