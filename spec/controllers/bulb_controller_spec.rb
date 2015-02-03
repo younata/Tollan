@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'Huey'
 
-RSpec.describe HueController, :type => :controller do
+RSpec.describe BulbController, :type => :controller do
   before (:each) do
   end
   describe "GET index" do

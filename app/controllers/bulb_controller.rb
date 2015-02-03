@@ -5,7 +5,7 @@ def as_int(str)
   str
 end
 
-class HueController < ApplicationController
+class BulbController < ApplicationController
   def index
     begin
       render :json => Huey::Bulb.all
