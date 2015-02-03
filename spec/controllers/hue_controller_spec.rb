@@ -52,5 +52,4 @@ RSpec.describe HueController, :type => :controller do
       expect(bulb).to have_received(:commit)
     end
   end
-
 end
