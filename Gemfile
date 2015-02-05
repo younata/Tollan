@@ -39,6 +39,8 @@ group :development, :test do
 
   gem 'rspec-rails'
 
+  gem 'rspec_api_documentation'
+
   gem 'rake'
 end
 
