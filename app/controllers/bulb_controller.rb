@@ -1,5 +1,9 @@
 require 'Huey'
 
+def int?(str)
+  (str =~ /\A\d+\Z/) != nil
+end
+
 def as_int(str)
   return str.to_i if str =~ /\A\d+\Z/
   str
@@ -36,39 +40,78 @@ class BulbController < ApplicationController
       transition_time = params[:transition_time]
       rgb = params[:rgb]
 
+      should_commit = false
+
       if name != nil
         bulb.name = name
+        should_commit = true
       end
 
       if on != nil
-        bulb.on = on
+        if on.casecmp("true") == 0
+          bulb.on = true
+          should_commit = true
+        elsif on.casecmp("false") == 0
+          bulb.on = false
+          should_commit = true
+        end
       end
 
       if brightness != nil
-        bulb.bri = brightness
+        if int? brightness
+          bri = brightness.to_i
+          if bri >= 0 && bri <= 254
+            bulb.bri = bri
+            should_commit = true
+          end
+        end
       end
 
       if hue != nil
-        bulb.hue = hue
+        if int? hue
+          h = hue.to_i
+          if h >= 0 && h <= 65535
+            bulb.hue = h
+            should_commit = true
+          end
+        end
       end
 
       if saturation != nil
-        bulb.sat = sat
+        if int? saturation
+          sat = saturation.to_i
+          if sat >= 0 && sat <= 254
+            bulb.sat = sat
+            should_commit = true
+          end
+        end
       end
 
       if ct != nil
-        bulb.ct = ct
+        if int? ct
+          temp = ct.to_i
+          if temp >= 154 && temp <= 500
+            bulb.ct = temp 
+            should_commit = true
+          end
+        end
       end
 
       if transition_time != nil
-        bulb.transitiontime = transition_time
+        if int? transition_time
+          bulb.transitiontime = transition_time.to_i
+          should_commit = true
+        end
       end
 
       if rgb != nil
-        bulb.rgb = rgb
+        if (rgb =~ /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/) != nil
+          bulb.rgb = rgb
+          should_commit = true
+        end
       end
 
-      bulb.commit
+      bulb.commit if should_commit
 
       render :json => bulb
     rescue Exception => e
