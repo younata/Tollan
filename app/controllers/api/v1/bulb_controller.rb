@@ -3,9 +3,7 @@ require 'api_helper'
 
 module Api
   module V1
-    class BulbController < ApplicationController
-      protect_from_forgery with: :null_session
-
+    class BulbController < ApiController
       def index
         render :json => Huey::Bulb.all
       end

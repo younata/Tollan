@@ -3,7 +3,7 @@ require 'api_helper'
 
 module Api
   module V1
-    class GroupController < ApplicationController
+    class GroupController < ApiController
       def index
         render :json => Huey::Group.all
       end
