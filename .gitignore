@@ -15,3 +15,13 @@
 /log/*
 !/log/.keep
 /tmp
+
+doc
+log
+
+/Gemfile.lock
+/config.ru
+
+bin
+
+*swp

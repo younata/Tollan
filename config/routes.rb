@@ -2,8 +2,9 @@ Rails.application.routes.draw do
   get 'bulbs/groups', to: 'group#index'
   get 'bulbs/groups/:id', to: 'group#show'
 
-  post 'bulbs/groups', to: 'group#create'
-  put 'bulbs/groups/:id', to: 'group#update'
+  #post 'bulbs/groups', to: 'group#create'
+  #put 'bulbs/groups/:id', to: 'group#update'
+  #delete 'bulbs/groups/:id', to 'group#delete'
 
   get 'bulbs', to: 'bulb#index'
   get 'bulbs/:id', to: 'bulb#show'

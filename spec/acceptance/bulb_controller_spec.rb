@@ -1,40 +1,41 @@
-require 'rails_helper'
+require 'acceptance_helper'
 require 'Huey'
-require 'rspec_api_documentation/dsl'
 
 resource 'Bulbs' do
-  before do
-    allow(Huey::Bulb).to receive(:all).and_return([{something: 'testing'}])
-  end
+  obj = {"id"=> 3, "changes"=> {}, "name"=> "Hue Lamp 2", "on"=> false, "bri"=> 194, "hue"=> 15051, "sat"=> 137, "xy"=> [0.4, 0.4], "ct"=> 359, "transitiontime"=> nil, "colormode"=> "ct", "effect"=> "none", "reachable"=> true, "alert"=> "none"}
+
   get "/bulbs" do
-    example "It returns all of the bulbs" do
+    before do
+      allow(Huey::Bulb).to receive(:all).and_return([obj])
+    end
+    example "Fetching all of the bulbs" do
       do_request
       expect(response_status).to eq(200)
       parsed_body = JSON.parse(response_body)
-      expect(parsed_body).to eq([{"something"=>"testing"}])
+      expect(parsed_body).to eq([obj])
     end
   end
 
   get '/bulbs/:id' do
     before do
-      allow(Huey::Bulb).to receive(:find).with(1).and_return({something: 'testing'})
-      allow(Huey::Bulb).to receive(:find).with('light').and_return({something: 'testing'})
+      allow(Huey::Bulb).to receive(:find).with(1).and_return(obj)
+      allow(Huey::Bulb).to receive(:find).with('light').and_return(obj)
     end
 
     parameter :id, "The name (string) or id number (integer) for a given light"
 
-    example "returns the bulb with id 1 when asked for bulb with id 1" do
+    example "Fetching a single bulb by id number" do
       do_request(id: 1)
       expect(response_status).to eq(200)
       parsed_body = JSON.parse(response_body)
-      expect(parsed_body).to eq({"something"=>"testing"})
+      expect(parsed_body).to eq(obj)
     end
 
-    example "returns the bulb with id 'light' when asked for bulb named 'light'" do
+    example "Fetching a single bulb by name" do
       do_request(id: 'light')
       expect(response_status).to eq(200)
       parsed_body = JSON.parse(response_body)
-      expect(parsed_body).to eq({"something"=>"testing"})
+      expect(parsed_body).to eq(obj)
     end
   end
 
