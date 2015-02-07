@@ -4,7 +4,7 @@ require 'Huey'
 resource 'Bulbs' do
   obj = {"id"=> 3, "changes"=> {}, "name"=> "Hue Lamp 2", "on"=> false, "bri"=> 194, "hue"=> 15051, "sat"=> 137, "xy"=> [0.4, 0.4], "ct"=> 359, "transitiontime"=> nil, "colormode"=> "ct", "effect"=> "none", "reachable"=> true, "alert"=> "none"}
 
-  get "/bulbs" do
+  get "/api/v1/bulbs" do
     before do
       allow(Huey::Bulb).to receive(:all).and_return([obj])
     end
@@ -16,7 +16,7 @@ resource 'Bulbs' do
     end
   end
 
-  get '/bulbs/:id' do
+  get '/api/v1/bulbs/:id' do
     before do
       allow(Huey::Bulb).to receive(:find).with(1).and_return(obj)
       allow(Huey::Bulb).to receive(:find).with('light').and_return(obj)
@@ -41,7 +41,7 @@ resource 'Bulbs' do
     end
   end
 
-  put '/bulbs/:id' do
+  put '/api/v1/bulbs/:id' do
     bulb = nil
     before do
       bulb = instance_double('Huey::Bulb', :id => 1)

@@ -1,15 +1,19 @@
 Rails.application.routes.draw do
-  get 'bulbs/groups', to: 'group#index'
-  get 'bulbs/groups/:id', to: 'group#show'
+  namespace :api, defaults: { format: :json } do
+    namespace :v1 do
+      get 'bulbs/groups', to: 'group#index'
+      get 'bulbs/groups/:id', to: 'group#show'
 
-  #post 'bulbs/groups', to: 'group#create'
-  #put 'bulbs/groups/:id', to: 'group#update'
-  #delete 'bulbs/groups/:id', to 'group#delete'
+      #post 'bulbs/groups', to: 'group#create'
+      #put 'bulbs/groups/:id', to: 'group#update'
+      #delete 'bulbs/groups/:id', to 'group#delete'
 
-  get 'bulbs', to: 'bulb#index'
-  get 'bulbs/:id', to: 'bulb#show'
+      get 'bulbs', to: 'bulb#index'
+      get 'bulbs/:id', to: 'bulb#show'
 
-  put 'bulbs/:id', to: 'bulb#update'
+      put 'bulbs/:id', to: 'bulb#update'
+    end
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

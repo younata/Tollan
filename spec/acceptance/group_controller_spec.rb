@@ -3,7 +3,7 @@ require 'Huey'
 
 resource 'Groups' do
 
-  get '/bulbs/groups' do
+  get '/api/v1/bulbs/groups' do
     before do
       allow(Huey::Group).to receive(:all).and_return([{something: 'testing'}])
     end
@@ -16,7 +16,7 @@ resource 'Groups' do
     end
   end
 
-  get '/bulbs/groups/:id' do
+  get '/api/v1/bulbs/groups/:id' do
     before do
       allow(Huey::Group).to receive(:find).with(1).and_return({something: 'testing'})
       allow(Huey::Group).to receive(:find).with('main').and_return({something: 'testing'})
