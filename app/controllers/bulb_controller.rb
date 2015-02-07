@@ -10,6 +10,8 @@ def as_int(str)
 end
 
 class BulbController < ApplicationController
+  protect_from_forgery with: :null_session
+
   def index
     render :json => Huey::Bulb.all
   end
