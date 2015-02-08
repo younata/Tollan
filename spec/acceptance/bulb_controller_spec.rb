@@ -2,17 +2,25 @@ require 'acceptance_helper'
 require 'Huey'
 
 resource 'Bulbs' do
+  let!(:user) { FactoryGirl.create(:user) }
+
   obj = {"id"=> 3, "changes"=> {}, "name"=> "Hue Lamp 2", "on"=> false, "bri"=> 194, "hue"=> 15051, "sat"=> 137, "xy"=> [0.4, 0.4], "ct"=> 359, "transitiontime"=> nil, "colormode"=> "ct", "effect"=> "none", "reachable"=> true, "alert"=> "none"}
 
   get "/api/v1/bulbs" do
     before do
       allow(Huey::Bulb).to receive(:all).and_return([obj])
     end
-    example_request "Fetching all of the bulbs" do
+    example "Fetching all of the bulbs" do
       explanation "It fetches all of the bulbs and returns them as an array of json objects"
+      header 'Authorization', "Token token=\"#{user.api_token}\""
+      do_request
       expect(response_status).to eq(200)
       parsed_body = JSON.parse(response_body)
       expect(parsed_body).to eq([obj])
+    end
+
+    context 'without authorization' do
+      it_should_behave_like 'an endpoint that requires authorization'
     end
   end
 
@@ -26,6 +34,7 @@ resource 'Bulbs' do
 
     example "Fetching a single bulb by id number" do
       explanation "It fetches a single bulb given the bulb's id number (as an integer)"
+      header 'Authorization', "Token token=\"#{user.api_token}\""
       do_request(id: 1)
       expect(response_status).to eq(200)
       parsed_body = JSON.parse(response_body)
@@ -34,10 +43,15 @@ resource 'Bulbs' do
 
     example "Fetching a single bulb by name" do
       explanation "It fetches a single bulb given the bulb's name (as a string)"
+      header 'Authorization', "Token token=\"#{user.api_token}\""
       do_request(id: 'light')
       expect(response_status).to eq(200)
       parsed_body = JSON.parse(response_body)
       expect(parsed_body).to eq(obj)
+    end
+
+    context 'without authorization' do
+      it_should_behave_like 'an endpoint that requires authorization'
     end
   end
 
@@ -66,6 +80,7 @@ resource 'Bulbs' do
     parameter :rgb, "Convenience method, pass in HTML hex values (e.g. '#777', '#FF88FF'. Include preceding '#'), and will automatically convert to hue/saturation"
 
     example 'Updating a bulb' do
+      header 'Authorization', "Token token=\"#{user.api_token}\""
       do_request(id: 1, on: false, brightness: 200, hue: 1024, saturation: 127, ct: 200, transition_time: 0, rgb: "#F30")
       explanation "It fetches a single bulb given the bulb's name or id number, and updates it with the given values"
 
@@ -80,14 +95,16 @@ resource 'Bulbs' do
     end
 
     context 'Updating the bulb\'s on value' do
-      example 'Updating the bulb with a valid on value', :document => false do
+      example 'with a valid on value', :document => false do
+        header 'Authorization', "Token token=\"#{user.api_token}\""
         do_request(id: 1, on: false)
 
         expect(bulb).to have_received(:on=).with(false)
         expect(bulb).to have_received(:commit)
       end
 
-      example 'Updating the bulb with an invalid on value', :document => false do
+      example 'with an invalid on value', :document => false do
+        header 'Authorization', "Token token=\"#{user.api_token}\""
         do_request(id: 1, on: 3)
 
         expect(bulb).to_not have_received(:on=)
@@ -96,14 +113,16 @@ resource 'Bulbs' do
     end
 
     context 'Updating the bulb\'s brightness value' do
-      example 'Updating the bulb with a valid brightness value', :document => false do
+      example 'with a valid brightness value', :document => false do
+        header 'Authorization', "Token token=\"#{user.api_token}\""
         do_request(id: 1, brightness: 200)
 
         expect(bulb).to have_received(:bri=).with(200)
         expect(bulb).to have_received(:commit)
       end
 
-      example 'Updating the bulb with an invalid brightness value', :document => false do
+      example 'with an invalid brightness value', :document => false do
+        header 'Authorization', "Token token=\"#{user.api_token}\""
         do_request(id: 1, brightness: 300)
 
         expect(bulb).to_not have_received(:bri=).with(300)
@@ -112,14 +131,16 @@ resource 'Bulbs' do
     end
 
     context 'Updating the bulb\'s hue value' do
-      example 'Updating the bulb with a valid hue value', :document => false do
+      example 'with a valid hue value', :document => false do
+        header 'Authorization', "Token token=\"#{user.api_token}\""
         do_request(id: 1, hue: 1024)
 
         expect(bulb).to have_received(:hue=).with(1024)
         expect(bulb).to have_received(:commit)
       end
 
-      example 'Updating the bulb with an invalid hue value', :document => false do
+      example 'with an invalid hue value', :document => false do
+        header 'Authorization', "Token token=\"#{user.api_token}\""
         do_request(id: 1, hue: 65536)
 
         expect(bulb).to_not have_received(:hue=).with(65536)
@@ -128,14 +149,16 @@ resource 'Bulbs' do
     end
 
     context 'Updating the bulb\'s saturation value' do
-      example 'Updating the bulb with a valid saturation value', :document => false do
+      example 'with a valid saturation value', :document => false do
+        header 'Authorization', "Token token=\"#{user.api_token}\""
         do_request(id: 1, saturation: 127)
 
         expect(bulb).to have_received(:sat=).with(127)
         expect(bulb).to have_received(:commit)
       end
 
-      example 'Updating the bulb with an invalid saturation value', :document => false do
+      example 'with an invalid saturation value', :document => false do
+        header 'Authorization', "Token token=\"#{user.api_token}\""
         do_request(id: 1, saturation: 400)
 
         expect(bulb).to_not have_received(:sat=).with(400)
@@ -144,14 +167,16 @@ resource 'Bulbs' do
     end
 
     context 'Updating the bulb\'s color temperature value' do
-      example 'Updating the bulb with a valid saturation value', :document => false do
+      example 'with a valid saturation value', :document => false do
+        header 'Authorization', "Token token=\"#{user.api_token}\""
         do_request(id: 1, ct: 250)
 
         expect(bulb).to have_received(:ct=).with(250)
         expect(bulb).to have_received(:commit)
       end
 
-      example 'Updating the bulb with an invalid saturation value', :document => false do
+      example 'with an invalid saturation value', :document => false do
+        header 'Authorization', "Token token=\"#{user.api_token}\""
         do_request(id: 1, ct: 100)
 
         expect(bulb).to_not have_received(:ct=).with(100)
@@ -160,14 +185,16 @@ resource 'Bulbs' do
     end
 
     context 'Updating the bulb\'s transition_time value' do
-      example 'Updating the bulb with a valid transition_time value', :document => false do
+      example 'with a valid transition_time value', :document => false do
+        header 'Authorization', "Token token=\"#{user.api_token}\""
         do_request(id: 1, transition_time: 10)
 
         expect(bulb).to have_received(:transitiontime=).with(10)
         expect(bulb).to have_received(:commit)
       end
 
-      example 'Updating the bulb with a valid transition_time value', :document => false do
+      example 'with a valid transition_time value', :document => false do
+        header 'Authorization', "Token token=\"#{user.api_token}\""
         do_request(id: 1, transition_time: "some string")
 
         expect(bulb).to_not have_received(:transitiontime=).with(10)
@@ -176,26 +203,34 @@ resource 'Bulbs' do
     end
 
     context 'Updating the bulb\'s rgb value' do
-      example 'Updating the bulb with a valid rgb value', :document => false do
+      example 'with a valid rgb value', :document => false do
+        header 'Authorization', "Token token=\"#{user.api_token}\""
         do_request(id: 1, rgb: "#FFFFFF")
 
         expect(bulb).to have_received(:rgb=).with("#FFFFFF")
         expect(bulb).to have_received(:commit)
       end
 
-      example 'Updating the bulb with a valid (short) rgb value', :document => false do
+      example 'with a valid (short) rgb value', :document => false do
+        header 'Authorization', "Token token=\"#{user.api_token}\""
         do_request(id: 1, rgb: "#FFF")
 
         expect(bulb).to have_received(:rgb=).with("#FFF")
         expect(bulb).to have_received(:commit)
       end
 
-      example 'Updating the bulb with an invalid rgb value', :document => false do
+      example 'with an invalid rgb value', :document => false do
+        header 'Authorization', "Token token=\"#{user.api_token}\""
         do_request(id: 1, rgb: "blah")
 
         expect(bulb).to_not have_received(:rgb=).with("blah")
         expect(bulb).to_not have_received(:commit)
       end
+    end
+
+    context 'without authorization' do
+      let(:id) { 1 }
+      it_should_behave_like 'an endpoint that requires authorization'
     end
   end
 end

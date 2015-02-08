@@ -2,6 +2,7 @@ require 'acceptance_helper'
 require 'Huey'
 
 resource 'Groups' do
+  let!(:user) { FactoryGirl.create(:user) }
 
   get '/api/v1/bulbs/groups' do
     before do
@@ -9,10 +10,15 @@ resource 'Groups' do
     end
 
     example 'Fetching all of the groups' do
+      header 'Authorization', "Token token=\"#{user.api_token}\""
       do_request
       expect(response_status).to eq(200)
       parsed_body = JSON.parse(response_body)
       expect(parsed_body).to eq([{"something"=>"testing"}])
+    end
+
+    context 'without authorization' do
+      it_should_behave_like 'an endpoint that requires authorization'
     end
   end
 
@@ -25,6 +31,7 @@ resource 'Groups' do
     parameter :id, "The name (string) or id number (integer) for a given group"
 
     example 'Fetching a single group by id number' do
+      header 'Authorization', "Token token=\"#{user.api_token}\""
       do_request(id: 1)
       expect(response_status).to eq(200)
       parsed_body = JSON.parse(response_body)
@@ -32,10 +39,15 @@ resource 'Groups' do
     end
 
     example 'Fetching a single group by name' do
+      header 'Authorization', "Token token=\"#{user.api_token}\""
       do_request(id: 'main')
       expect(response_status).to eq(200)
       parsed_body = JSON.parse(response_body)
       expect(parsed_body).to eq({"something"=>"testing"})
+    end
+
+    context 'without authorization' do
+      it_should_behave_like 'an endpoint that requires authorization'
     end
   end
 
