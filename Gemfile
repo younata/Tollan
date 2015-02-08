@@ -42,5 +42,7 @@ group :development, :test do
   gem 'rspec_api_documentation'
 
   gem 'rake'
+
+  gem 'factory_girl_rails'
 end
 
