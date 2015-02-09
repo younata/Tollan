@@ -1,0 +1,33 @@
+<div class="center jumbotron">
+  <h1><%= @bulb.name %></h1>
+  <table>
+    <!--
+    FIXME: Make this into a form to update stuff.
+    -->
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>On</th>
+        <th>Reachable</th>
+        <th>Brightness</th>
+        <th>Hue</th>
+        <th>Saturation</th>
+        <th>Color Temperature</th>
+        <th>Transition Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%= @bulb.id %></td>
+        <td><%= @bulb.on %></td>
+        <td><%= @bulb.reachable %></td>
+        <td><%= @bulb.bri %></td>
+        <td><%= @bulb.hue %></td>
+        <td><%= @bulb.sat %></td>
+        <td><%= @bulb.ct %></td>
+        <td><%= @bulb.transitiontime != nil ? @bulb.transitiontime : 0 %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
