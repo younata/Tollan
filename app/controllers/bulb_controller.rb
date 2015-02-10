@@ -1,4 +1,5 @@
 require 'Huey'
+require 'api_helper'
 
 class BulbController < ApplicationController
   def index
@@ -6,6 +7,6 @@ class BulbController < ApplicationController
   end
 
   def view
-    @bulb = Huey::Bulb.find(params[:id])
+    @bulb = Huey::Bulb.find(ApiHelper::as_int params[:id])
   end
 end

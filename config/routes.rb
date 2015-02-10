@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  get 'bulb', to: 'bulb#index'
-  get 'bulb/:id', to: 'bulb#view'
+  get 'bulbs', to: 'bulb#index'
+  get 'bulbs/:id', to: 'bulb#view'
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
