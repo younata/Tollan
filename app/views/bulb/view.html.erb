@@ -1,33 +1,32 @@
 <div class="center jumbotron">
   <h1><%= @bulb.name %></h1>
-  <table>
-    <!--
-    FIXME: Make this into a form to update stuff.
-    -->
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>On</th>
-        <th>Reachable</th>
-        <th>Brightness</th>
-        <th>Hue</th>
-        <th>Saturation</th>
-        <th>Color Temperature</th>
-        <th>Transition Time</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><%= @bulb.id %></td>
-        <td><%= @bulb.on %></td>
-        <td><%= @bulb.reachable %></td>
-        <td><%= @bulb.bri %></td>
-        <td><%= @bulb.hue %></td>
-        <td><%= @bulb.sat %></td>
-        <td><%= @bulb.ct %></td>
-        <td><%= @bulb.transitiontime != nil ? @bulb.transitiontime : 0 %></td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <%= form_for(:bulb, url: update_path) do |f| %>
+        <%= f.label :Name %>
+        <%= f.text_field :name, class: 'form-control' %>
+
+        <%= f.label :On %>
+        <%= f.text_field :on, class: 'form-control' %>
+
+        <%= f.label :Brightness %>
+        <%= f.range_field :brightness, in: 1..100, class: 'form-control' %>
+
+        <%= f.label :Color %>
+        <%= f.color_field :rgb, class: 'form-control' %>
+
+<% if false %>
+TODO: find a better way to present this to the user
+        <%= f.label :Color_Temperature %>
+        <%= f.text_field :color_temp, class: 'form-control' %>
+<% end %>
+
+        <%= f.label :Transition_time %>
+        <%= f.text_field :transition_time, class: 'form-control' %>
+
+        <%= f.submit "Update", class: "btn btn-primary", method: 'PUT' %>
+      <% end %>
+    </div>
+  </div>
 </div>
 
