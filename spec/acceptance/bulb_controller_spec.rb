@@ -30,9 +30,9 @@ resource 'Bulbs' do
       allow(Huey::Bulb).to receive(:find).with('light').and_return(obj)
     end
 
-    parameter :id, "The name (string) or id number (integer) for a given light", :required => true
+    parameter :id, 'The name (string) or id number (integer) for a given light', :required => true
 
-    example "Fetching a single bulb by id number" do
+    example 'Fetching a single bulb by id number' do
       explanation "It fetches a single bulb given the bulb's id number (as an integer)"
       header 'Authorization', "Token token=\"#{user.api_token}\""
       do_request(id: 1)
@@ -41,7 +41,7 @@ resource 'Bulbs' do
       expect(parsed_body).to eq(obj)
     end
 
-    example "Fetching a single bulb by name" do
+    example 'Fetching a single bulb by name' do
       explanation "It fetches a single bulb given the bulb's name (as a string)"
       header 'Authorization', "Token token=\"#{user.api_token}\""
       do_request(id: 'light')
@@ -67,6 +67,14 @@ resource 'Bulbs' do
       allow(bulb).to receive(:transitiontime=)
       allow(bulb).to receive(:rgb=)
       allow(bulb).to receive(:commit)
+
+      allow(bulb).to receive(:on).and_return(true)
+      allow(bulb).to receive(:bri).and_return(300)
+      allow(bulb).to receive(:hue).and_return(5673)
+      allow(bulb).to receive(:sat).and_return(135)
+      allow(bulb).to receive(:ct).and_return(243)
+      allow(bulb).to receive(:transitiontime).and_return(15)
+      allow(bulb).to receive(:rgb).and_return('#123456')
       allow(Huey::Bulb).to receive(:find).with(1).and_return(bulb)
     end
 
