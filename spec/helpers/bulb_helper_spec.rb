@@ -38,6 +38,21 @@ RSpec.describe BulbHelper, :type => :helper do
     expect(bulb).to have_received(:commit)
   end
 
+  describe 'updating boolean values' do
+    it 'should allow 0 values for booleans to stand in for false' do
+      update_bulb('1', nil, '0', nil, nil, nil, nil, nil, nil)
+      expect(bulb).to have_received(:on=).with(false)
+      expect(bulb).to have_received(:commit)
+    end
+
+    it 'should allow 1 values for booleans to stand in for true' do
+      allow(bulb).to receive(:on).and_return(false)
+      update_bulb('1', nil, '1', nil, nil, nil, nil, nil, nil)
+      expect(bulb).to have_received(:on=).with(true)
+      expect(bulb).to have_received(:commit)
+    end
+  end
+
   it 'should update only values that aren\'t nil' do
     update_bulb('1', nil, nil, nil, nil, nil, nil, '0', nil)
     expect(bulb).to_not have_received(:on=)

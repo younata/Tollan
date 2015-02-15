@@ -4,6 +4,7 @@ require 'session_helper'
 
 class BulbController < ApplicationController
   include SessionHelper
+  include BulbHelper
 
   before_action :logged_in_user
 
@@ -25,8 +26,9 @@ class BulbController < ApplicationController
     color_temp = params[:bulb][:color_temp]
     transition_time = params[:bulb][:transition_time]
     rgb = params[:bulb][:rgb]
+
     update_bulb(id, name, on, brightness, hue, saturation, color_temp, transition_time, rgb)
-    redirect_to '/bulbs'
+    redirect_to "/bulbs/#{id}"
   end
 
   private

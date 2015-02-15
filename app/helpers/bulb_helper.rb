@@ -14,10 +14,10 @@ module BulbHelper
     end
 
     if on != nil
-      if on.casecmp("true") == 0 && !bulb.on
+      if (on.casecmp("true") == 0 || on == '1')  && !bulb.on
         bulb.on = true
         should_commit = true
-      elsif on.casecmp("false") == 0 && bulb.on
+      elsif (on.casecmp("false") == 0 || on == '0') && bulb.on
         bulb.on = false
         should_commit = true
       end
