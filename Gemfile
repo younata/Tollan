@@ -21,6 +21,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'huey'
 gem 'json'
 gem 'multi_json'
+gem 'redcarpet'
 
 # Use Unicorn as the app server
 gem 'unicorn'
