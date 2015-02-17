@@ -26,6 +26,9 @@
         <td><%= b.sat %></td>
         <td><%= b.ct %></td>
         <td><%= b.transitiontime != nil ? b.transitiontime : 0 %></td>
+        <% if b.reachable %>
+          <td><a href="<%= b.id %>">Edit</a></td>
+        <% end %>
       </tr>
       <% end %>
     </tbody>
