@@ -1,5 +1,5 @@
 require 'rails_helper'
-require 'Huey'
+require 'huey'
 
 RSpec.describe BulbHelper, :type => :helper do
   let!(:bulb) { instance_double('Huey::Bulb', :id => 1) }

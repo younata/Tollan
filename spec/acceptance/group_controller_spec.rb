@@ -1,5 +1,5 @@
 require 'acceptance_helper'
-require 'Huey'
+require 'huey'
 
 resource 'Groups' do
   let!(:user) { FactoryGirl.create(:user) }

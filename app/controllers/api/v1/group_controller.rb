@@ -1,4 +1,4 @@
-require 'Huey'
+require 'huey'
 require 'api_helper'
 
 module Api
