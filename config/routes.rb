@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   post 'login', to: 'session#create'
   delete 'logout', to: 'session#destroy'
 
+  get 'signup', to: 'register#new'
+  post 'signup', to: 'register#create'
+
   get 'bulbs', to: 'bulb#index'
   get 'bulbs/:id', to: 'bulb#view'
   put 'bulbs/:id', to: 'bulb#update'

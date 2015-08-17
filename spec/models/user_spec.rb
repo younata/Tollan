@@ -7,10 +7,16 @@ RSpec.describe User, :type => :model do
     u
   end
 
-  it 'should automatically create an api_token' do
-    expect(user.api_token).to_not be_nil
-  end
+  describe 'creating api_tokens' do
+    it 'should not automatically create an api_token' do
+      expect(user.api_token).to be_nil
+    end
 
+    it 'should create an api_token when create_api_token is called' do
+      user.create_api_token
+      expect(user.api_token).to_not be_nil
+    end
+  end
 
   describe 'username' do
     it 'should require usernames' do

@@ -2,7 +2,11 @@ require 'acceptance_helper'
 require 'huey'
 
 resource 'Bulbs' do
-  let!(:user) { FactoryGirl.create(:user) }
+  let!(:user) do
+    user = FactoryGirl.create(:user)
+    user.create_api_token
+    user
+  end
 
   obj = {"id"=> 3, "changes"=> {}, "name"=> "Hue Lamp 2", "on"=> false, "bri"=> 194, "hue"=> 15051, "sat"=> 137, "xy"=> [0.4, 0.4], "ct"=> 359, "transitiontime"=> nil, "colormode"=> "ct", "effect"=> "none", "reachable"=> true, "alert"=> "none"}
 

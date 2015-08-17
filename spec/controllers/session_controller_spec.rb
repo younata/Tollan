@@ -3,8 +3,7 @@ require 'rails_helper'
 include SessionHelper
 
 RSpec.describe SessionController, :type => :controller do
-
-  describe 'GET new' do
+  describe 'getting to login screen' do
     it 'returns http success' do
       get :new
       expect(response).to have_http_status(:success)
@@ -21,7 +20,7 @@ RSpec.describe SessionController, :type => :controller do
     end
 
     context 'When the user enters an invalid username/password combination' do
-      it 'should log in' do
+      it 'should not log in' do
         post :create, {session: {username: 'not a username', password: 'not a password'}}
         expect(logged_in?).to be_falsy
       end

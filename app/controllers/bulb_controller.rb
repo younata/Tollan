@@ -18,16 +18,19 @@ class BulbController < ApplicationController
 
   def update
     id = params[:id]
-    name = params[:bulb][:name]
-    on = params[:bulb][:on]
-    brightness = params[:bulb][:brightness]
-    hue = params[:bulb][:hue]
-    saturation = params[:bulb][:saturation]
-    color_temp = params[:bulb][:color_temp]
-    transition_time = params[:bulb][:transition_time]
-    rgb = params[:bulb][:rgb]
+    if @current_user.api_token.nil?
+    else
+      name = params[:bulb][:name]
+      on = params[:bulb][:on]
+      brightness = params[:bulb][:brightness]
+      hue = params[:bulb][:hue]
+      saturation = params[:bulb][:saturation]
+      color_temp = params[:bulb][:color_temp]
+      transition_time = params[:bulb][:transition_time]
+      rgb = params[:bulb][:rgb]
 
-    update_bulb(id, name, on, brightness, hue, saturation, color_temp, transition_time, rgb)
+      update_bulb(id, name, on, brightness, hue, saturation, color_temp, transition_time, rgb)
+    end
     redirect_to "/bulbs/#{id}"
   end
 

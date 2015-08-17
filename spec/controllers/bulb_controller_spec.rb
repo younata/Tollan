@@ -4,7 +4,6 @@ require 'huey'
 include SessionHelper
 
 RSpec.describe BulbController, :type => :controller do
-
   context 'when logged in' do
     let!(:bulb) { instance_double('Huey::Bulb', :id => 1) }
     let!(:user) { FactoryGirl.create(:user) }
@@ -12,6 +11,7 @@ RSpec.describe BulbController, :type => :controller do
     before do
       allow(Huey::Bulb).to receive(:find).with(1).and_return(bulb)
       session[:user_id] = user.id
+      expect(user.api_token).to be_nil
     end
 
     describe 'GET index' do
@@ -52,19 +52,45 @@ RSpec.describe BulbController, :type => :controller do
         allow(bulb).to receive(:rgb).and_return('#123456')
       end
 
-      it 'should successfully update the bulb' do
-        bulb_hash = {on: 'false', brightness: '200', hue: '1024', saturation: '127', color_temp: '200', transition_time: '0', rgb: '#F30'}
-        put :update, id: '1', bulb: bulb_hash
-        # just testing  the happy path, see spec/helpers/bulb_helper_spec.rb for the more complete spec.
+      context 'without a valid api_token' do
+        it 'should not do anything' do
+          bulb_hash = {on: 'false', brightness: '200', hue: '1024', saturation: '127', color_temp: '200', transition_time: '0', rgb: '#F30'}
+          put :update, id: '1', bulb: bulb_hash
 
-        expect(bulb).to have_received(:on=).with(false)
-        expect(bulb).to have_received(:bri=).with(200)
-        expect(bulb).to have_received(:hue=).with(1024)
-        expect(bulb).to have_received(:sat=).with(127)
-        expect(bulb).to have_received(:ct=).with(200)
-        expect(bulb).to have_received(:transitiontime=).with(0)
-        expect(bulb).to have_received(:rgb=).with("#F30")
-        expect(bulb).to have_received(:commit)
+          expect(bulb).to_not have_received(:on=).with(false)
+          expect(bulb).to_not have_received(:bri=).with(200)
+          expect(bulb).to_not have_received(:hue=).with(1024)
+          expect(bulb).to_not have_received(:sat=).with(127)
+          expect(bulb).to_not have_received(:ct=).with(200)
+          expect(bulb).to_not have_received(:transitiontime=).with(0)
+          expect(bulb).to_not have_received(:rgb=).with("#F30")
+          expect(bulb).to_not have_received(:commit)
+
+          expect(response).to redirect_to '/bulbs/1'
+        end
+      end
+
+      context 'with a valid api_token' do
+        before do
+          user.create_api_token
+        end
+
+        it 'should successfully update the bulb' do
+          bulb_hash = {on: 'false', brightness: '200', hue: '1024', saturation: '127', color_temp: '200', transition_time: '0', rgb: '#F30'}
+          put :update, id: '1', bulb: bulb_hash
+          # just testing  the happy path, see spec/helpers/bulb_helper_spec.rb for the more complete spec.
+
+          expect(bulb).to have_received(:on=).with(false)
+          expect(bulb).to have_received(:bri=).with(200)
+          expect(bulb).to have_received(:hue=).with(1024)
+          expect(bulb).to have_received(:sat=).with(127)
+          expect(bulb).to have_received(:ct=).with(200)
+          expect(bulb).to have_received(:transitiontime=).with(0)
+          expect(bulb).to have_received(:rgb=).with("#F30")
+          expect(bulb).to have_received(:commit)
+
+          expect(response).to redirect_to '/bulbs/1'
+        end
       end
     end
   end
@@ -80,6 +106,13 @@ RSpec.describe BulbController, :type => :controller do
     describe 'GET view' do
       it 'should redirect the user to the legin page' do
         get :view, id: '1'
+        expect(response).to redirect_to '/login'
+      end
+    end
+    describe 'PUT view' do
+      it 'should redirect the user to the legin page' do
+        bulb_hash = {}
+        put :update, id: '1', bulb: bulb_hash
         expect(response).to redirect_to '/login'
       end
     end

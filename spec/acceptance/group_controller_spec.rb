@@ -2,7 +2,11 @@ require 'acceptance_helper'
 require 'huey'
 
 resource 'Groups' do
-  let!(:user) { FactoryGirl.create(:user) }
+  let!(:user) do
+    user = FactoryGirl.create(:user)
+    user.create_api_token
+    user
+  end
 
   get '/api/v1/bulbs/groups' do
     before do
