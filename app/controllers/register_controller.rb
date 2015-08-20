@@ -6,14 +6,14 @@ class RegisterController < ApplicationController
   end
 
   def create
-    user = User.find_by(username: params[:session][:username].downcase)
+    user = User.find_by(username: params[:register][:username].downcase)
     if user
       flash.now[:danger] = 'Bad user, no donut'
       render 'new'
     else
-      username = params[:session][:username].downcase
-      password = params[:session][:password]
-      password_confirmation = params[:session][:password_confirmation]
+      username = params[:register][:username].downcase
+      password = params[:register][:password]
+      password_confirmation = params[:register][:password_confirmation]
       user = User.create(username: username, password: password, password_confirmation: password_confirmation)
       redirect_to '/'
     end
