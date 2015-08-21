@@ -92,9 +92,9 @@ resource 'Bulbs' do
     parameter :rgb, "Convenience method, pass in HTML hex values (e.g. '#777', '#FF88FF'. Include preceding '#'), and will automatically convert to hue/saturation"
 
     example 'Updating a bulb' do
+      explanation "It fetches a single bulb given the bulb's name or id number, and updates it with the given values"
       header 'Authorization', "Token token=\"#{user.api_token}\""
       do_request(id: 1, on: false, brightness: 200, hue: 1024, saturation: 127, ct: 200, transition_time: 0, rgb: "#F30")
-      explanation "It fetches a single bulb given the bulb's name or id number, and updates it with the given values"
 
       expect(bulb).to have_received(:on=).with(false)
       expect(bulb).to have_received(:bri=).with(200)

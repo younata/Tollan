@@ -11,6 +11,11 @@ Rails.application.routes.draw do
   put 'bulbs/:id', to: 'bulb#update'
   post 'bulbs/:id', to: 'bulb#update'
 
+  get 'locks', to: 'lock#index'
+  get 'locks/:id', to: 'lock#view'
+  put 'locks/:id', to: 'lock#update'
+  post 'locks/:id', to: 'lock#update'
+
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       get 'bulbs/groups', to: 'group#index'
@@ -22,8 +27,11 @@ Rails.application.routes.draw do
 
       get 'bulbs', to: 'bulb#index'
       get 'bulbs/:id', to: 'bulb#show'
-
       put 'bulbs/:id', to: 'bulb#update'
+
+      get 'locks', to: 'lock#index'
+      get 'locks/:id', to: 'lock#show'
+      put 'locks/:id', to: 'lock#update'
     end
   end
 

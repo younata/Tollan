@@ -1,5 +1,4 @@
 require 'huey'
-
 require 'api_helper'
 
 module BulbHelper
