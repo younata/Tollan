@@ -7,6 +7,7 @@ def lock(locked, id)
   allow(lock).to receive(:unlocked?).and_return(!locked)
   allow(lock).to receive(:lock)
   allow(lock).to receive(:unlock)
+  allow(lock).to receive(:name).and_return("name")
   lock
 end
 
@@ -33,9 +34,6 @@ RSpec.describe LockController, type: :controller do
         it 'returns http success' do
           get :index
           expect(response).to have_http_status(:success)
-          #locks = [{"uuid" => "1234567890abcdef", "locked" => true},
-          #         {"uuid" => "0987654321", "locked" => false}]
-          #expect(subject.locks).to eq(locks)
         end
       end
 
@@ -43,7 +41,6 @@ RSpec.describe LockController, type: :controller do
         it 'returns http success' do
           get :view, id: '1234567890abcdef'
           expect(response).to have_http_status(:success)
-          #expect(subject.lock).to eq(lock1)
         end
       end
 

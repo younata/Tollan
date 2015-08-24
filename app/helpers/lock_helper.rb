@@ -6,7 +6,7 @@ module LockHelper
   end
 
   def lock_json(lock)
-    {"uuid" => lock.uuid, "locked" => lock.locked?}
+    {"uuid" => lock.uuid, "locked" => lock.locked?, "name" => lock.name}
   end
 
   def update_lock(lock, to_lock)
@@ -16,7 +16,7 @@ module LockHelper
     else
       lock.unlock
     end
-    {"uuid" => lock.uuid, "locked" => to_lock_bool}
+    {"uuid" => lock.uuid, "locked" => to_lock_bool, "name" => lock.name}
   end
 
   private

@@ -8,6 +8,7 @@ def lock(locked, id)
   allow(lock).to receive(:unlocked?).and_return(!locked)
   allow(lock).to receive(:lock)
   allow(lock).to receive(:unlock)
+  allow(lock).to receive(:name).and_return("name")
   lock
 end
 
@@ -19,11 +20,11 @@ resource 'Locks' do
   end
 
   let(:locked_lock) do
-    {"uuid" => '1234567890abcdef', "locked" => true}
+    {"uuid" => '1234567890abcdef', "locked" => true, "name" => "name"}
   end
 
   let(:unlocked_lock) do
-    {"uuid" => '0987654321', "locked" => false}
+    {"uuid" => '0987654321', "locked" => false, "name" => "name"}
   end
 
   get '/api/v1/locks' do
@@ -93,7 +94,7 @@ resource 'Locks' do
       do_request(id: '0987654321', lock: true)
       expect(response_status).to eq(200)
       parsed_body = JSON.parse(response_body)
-      expect(parsed_body).to eq({"uuid" => '0987654321', "locked" => true})
+      expect(parsed_body).to eq({"uuid" => '0987654321', "locked" => true, "name" => "name"})
       expect(lock2).to have_received(:lock)
     end
 
@@ -103,7 +104,7 @@ resource 'Locks' do
       do_request(id: '1234567890abcdef', lock: false)
       expect(response_status).to eq(200)
       parsed_body = JSON.parse(response_body)
-      expect(parsed_body).to eq({"uuid" => '1234567890abcdef', "locked" => false})
+      expect(parsed_body).to eq({"uuid" => '1234567890abcdef', "locked" => false, "name" => "name"})
 
       expect(lock1).to have_received(:unlock)
     end

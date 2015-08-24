@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   validates :username, presence: true, uniqueness: { case_sensitive: false }
-  validates :password, presence: true
+  validates :password_digest, presence: true
   validates_presence_of :password, :on => :create
 
   has_secure_password
