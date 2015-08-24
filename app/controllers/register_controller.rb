@@ -15,7 +15,7 @@ class RegisterController < ApplicationController
       password = params[:register][:password]
       password_confirmation = params[:register][:password_confirmation]
       user = User.create(username: username, password: password, password_confirmation: password_confirmation)
-      redirect_to '/'
+      redirect_to '/login'
     end
   end
 end

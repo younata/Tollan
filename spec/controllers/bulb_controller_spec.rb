@@ -15,20 +15,40 @@ RSpec.describe BulbController, :type => :controller do
     end
 
     describe 'GET index' do
-      before do
-        allow(Huey::Bulb).to receive(:all).and_return([bulb])
+      context 'without a valid api_token' do
+        it 'should not do anything' do
+          get :index
+          expect(response).to redirect_to('/')
+        end
       end
 
-      it 'returns http success' do
-        get :index
-        expect(response).to have_http_status(:success)
+      context 'with a valid api_token' do
+        before do
+          user.create_api_token
+          allow(Huey::Bulb).to receive(:all).and_return([bulb])
+        end
+
+        it 'returns http success' do
+          get :index
+          expect(response).to have_http_status(:success)
+        end
       end
     end
 
     describe 'GET view' do
-      it 'returns http success' do
-        get :view, id: '1'
-        expect(response).to have_http_status(:success)
+      context 'without a valid api_token' do
+        it 'should not do anything' do
+          get :view, id: '1'
+          expect(response).to redirect_to('/')
+        end
+      end
+
+      context 'with a valid api_token' do
+        it 'returns http success' do
+          user.create_api_token
+          get :view, id: '1'
+          expect(response).to have_http_status(:success)
+        end
       end
     end
 
@@ -66,7 +86,7 @@ RSpec.describe BulbController, :type => :controller do
           expect(bulb).to_not have_received(:rgb=).with("#F30")
           expect(bulb).to_not have_received(:commit)
 
-          expect(response).to redirect_to '/bulbs/1'
+          expect(response).to redirect_to('/')
         end
       end
 

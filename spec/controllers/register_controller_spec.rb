@@ -14,7 +14,7 @@ RSpec.describe RegisterController, type: :controller do
     context 'When a user with that username does not already exist' do
       it 'should allow the user to sign up, but is not able to change things' do
         post :create, {register: {username: 'blah', password: 'password', confirm_password: 'password'}}
-        expect(response).to have_http_status(302)
+        expect(response).to redirect_to('/login')
         created_user = User.find_by(username: 'blah')
         expect(created_user).to_not be_nil
         expect(created_user.api_token).to be_nil

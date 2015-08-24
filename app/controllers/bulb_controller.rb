@@ -18,28 +18,28 @@ class BulbController < ApplicationController
 
   def update
     id = params[:id]
-    if @current_user.api_token.nil?
-    else
-      name = params[:bulb][:name]
-      on = params[:bulb][:on]
-      brightness = params[:bulb][:brightness]
-      hue = params[:bulb][:hue]
-      saturation = params[:bulb][:saturation]
-      color_temp = params[:bulb][:color_temp]
-      transition_time = params[:bulb][:transition_time]
-      rgb = params[:bulb][:rgb]
+    name = params[:bulb][:name]
+    on = params[:bulb][:on]
+    brightness = params[:bulb][:brightness]
+    hue = params[:bulb][:hue]
+    saturation = params[:bulb][:saturation]
+    color_temp = params[:bulb][:color_temp]
+    transition_time = params[:bulb][:transition_time]
+    rgb = params[:bulb][:rgb]
 
-      update_bulb(id, name, on, brightness, hue, saturation, color_temp, transition_time, rgb)
-    end
+    update_bulb(id, name, on, brightness, hue, saturation, color_temp, transition_time, rgb)
     redirect_to "/bulbs/#{id}"
   end
 
   private
 
   def logged_in_user
-    unless logged_in?
+    if current_user.nil?
       flash[:danger] = 'Please log in.'
       redirect_to login_url
+    elsif current_user.api_token.nil?
+      flash[:danger] = 'Insufficient privileges'
+      redirect_to '/'
     end
   end
 end
